@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:time_tracker_flutter_course/common_widgets/platform_alert_dialog.dart';
 import 'package:time_tracker_flutter_course/services/auth.dart';
+import 'package:time_tracker_flutter_course/services/auth_provider.dart';
 
 class HomePage extends StatelessWidget {
 
-  HomePage({@required this.auth});
-  final AuthBase auth;
-
-  Future<void> _signOut() async {
+  Future<void> _signOut(BuildContext context) async {
     try {
+      final auth = AuthProvider.of(context);
       await auth.signOut();
     } catch(e) {
       print(e.toString());
@@ -16,6 +15,7 @@ class HomePage extends StatelessWidget {
   }
 
   Future<void> _confirmSignOut(BuildContext context) async {
+    print('Signed out clicked');
     final didRequestSignOut = PlatformAlertDialog(
         title: 'Logout',
         content: 'Are you sure you want to Job',
@@ -23,7 +23,7 @@ class HomePage extends StatelessWidget {
         defaultActionText: 'Logout',
     ).show(context);
     if (didRequestSignOut == true) {
-      _signOut();
+      _signOut(context);
     }
   }
 
